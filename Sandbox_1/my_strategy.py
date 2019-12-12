@@ -3,7 +3,8 @@ import model
 
 class MyStrategy:
     def __init__(self):
-        pass
+        prev_enemy_pos = None
+        enemy_velocity = None
 
     def get_action(self, unit, game, debug):
         # Replace this code with your own
@@ -22,7 +23,9 @@ class MyStrategy:
         if unit.weapon is None and nearest_weapon is not None:
             target_pos = nearest_weapon.position
         elif nearest_enemy is not None:
-            target_pos = nearest_enemy.position
+            target_pos = model.Vec2Double(
+                nearest_enemy.position.x - 5,
+                nearest_enemy.position.y)
         debug.draw(model.CustomData.Log("Target pos: {}".format(target_pos)))
         aim = model.Vec2Double(0, 0)
         if nearest_enemy is not None:
