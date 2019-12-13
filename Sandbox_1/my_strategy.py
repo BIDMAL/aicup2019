@@ -63,7 +63,7 @@ class MyStrategy:
                 nearest_enemy.position.y)
         return target_pos
 
-    def calc_aim(self, nearest_enemy, unit, game, debug):
+    def calc_aim(self, nearest_enemy, unit, game):
         aim = model.Vec2Double(0, 0)
         shoot = False
         if nearest_enemy is not None:
@@ -72,36 +72,10 @@ class MyStrategy:
             traj_len_y = nearest_enemy.position.y - unit.position.y
             aim = model.Vec2Double(traj_len_x, traj_len_y)
 
-            #sign_x = Calc.sign(traj_len_x)
-            #sign_y = Calc.sign(traj_len_y)
-            #curr_pos = model.Vec2Double(unit.position.x, unit.position.y)
-            #leng = 0
-            #poslist = []
-            # while Calc.distance_sqr(curr_pos, nearest_enemy.position) >= 1 and leng < 100:
-            #    pos_dx = model.Vec2Double(curr_pos.x + sign_x, curr_pos.y)
-            #    pos_dy = model.Vec2Double(curr_pos.x, curr_pos.y + sign_y)
-            #    if Calc.distance_sqr(pos_dx, nearest_enemy.position) >= Calc.distance_sqr(pos_dy, nearest_enemy.position):
-            #        curr_pos.x += sign_x
-            #    else:
-            #        curr_pos.y += sign_y
-#
-            #    # debug.draw(model.CustomData.Rect(
-            #    #     curr_pos, curr_pos, model.ColorFloat(255, 0, 0, 1)))
-            #    poslist.append((curr_pos.x, curr_pos.y))
-            #    if game.level.tiles[int(curr_pos.x)][int(curr_pos.y)] == model.Tile.WALL:
-            #        shoot = False
-            #        break
-            #    leng += 1
-
-        return aim, shoot, leng, poslist
+        return aim, shoot
 
     def calc_jump(self):
-        jump = True
-        # if target_pos.x > unit.position.x and game.level.tiles[int(unit.position.x + 1)][int(unit.position.y)] == model.Tile.WALL:
-        #     jump = True
-        # if target_pos.x < unit.position.x and game.level.tiles[int(unit.position.x - 1)][int(unit.position.y)] == model.Tile.WALL:
-        #     jump = True
-        return jump
+        return True
 
     def get_action(self, unit, game, debug):
         nearest_enemy, nearest_weapon, nearest_hpbox, expected_enemy_pos = self.calc_objects(
@@ -109,31 +83,16 @@ class MyStrategy:
 
         target_pos = self.calc_move(
             unit, nearest_weapon, nearest_enemy, nearest_hpbox)
-        aim, shoot, leng, poslist = self.calc_aim(
-            nearest_enemy, unit, game, debug)
+
+        aim, shoot = self.calc_aim(
+            nearest_enemy, unit, game)
 
         jump = self.calc_jump()
-
-        #  Debug----------------------
-        #debug.draw(model.CustomData.Log("Target pos: {}".format(target_pos)))
-        # debug.draw(model.CustomData.Log(
-        #    "Expected enemy pos: {}".format(expected_enemy_pos)))
-        # debug.draw(model.CustomData.Log(
-        #    "Velocity: {}".format(target_pos.x - unit.position.x)))
-        #debug.draw(model.CustomData.Log("Jump: {}".format(jump)))
-        debug.draw(model.CustomData.Log("Dist X: {}".format(
-            nearest_enemy.position.x - unit.position.x)))
-        debug.draw(model.CustomData.Log("Dist Y: {}".format(
-            nearest_enemy.position.y - unit.position.y)))
-        debug.draw(model.CustomData.Log("Trajectory length: {}".format(leng)))
-        debug.draw(model.CustomData.Log(
-            "poslist: {}".format(poslist)))
-        #  /Debug----------------------
 
         self.prev_enemy_pos = nearest_enemy.position
 
         return model.UnitAction(
-            velocity=(target_pos.x - unit.position.x)*10,
+            velocity=(target_pos.x - unit.position.x) * 10,
             jump=jump,
             jump_down=not jump,
             aim=aim,
