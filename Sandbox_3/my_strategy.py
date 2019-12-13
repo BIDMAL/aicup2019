@@ -80,6 +80,15 @@ class MyStrategy:
 
         expected_enemy_pos = unit.position
         if (self.prev_enemy_pos is not None) and (nearest_enemy is not None):
+            # if unit.weapon is not None:
+            #    if unit.weapon.params.bullet.speed == 50:
+            #        bullet_coef = 9
+            #    else:
+            #        bullet_coef = 19
+            # else:
+            #    bullet_coef = 1
+            # debug.draw(model.CustomData.Log(
+            #    "bullet_coef: {}".format(bullet_coef)))
             self.enemy_velocity = model.Vec2Double(
                 nearest_enemy.position.x - self.prev_enemy_pos.x,
                 nearest_enemy.position.y - self.prev_enemy_pos.y)
@@ -176,6 +185,50 @@ class MyStrategy:
         jump = self.calc_jump(unit, game, target_pos)
 
         plant_mine = self.calc_plant_mine(unit, nearest_enemy, velocity)
+
+        #  Debug----------------------
+        # if unit.weapon is not None:
+        #    debug.draw(model.CustomData.Log(
+        #        "Magazine: {}".format(unit.weapon.magazine)))
+        #    debug.draw(model.CustomData.Log(
+        #        "Fire timer: {}".format(unit.weapon.fire_timer)))
+        #    debug.draw(model.CustomData.Log(
+        #        "Last fire tick: {}".format(unit.weapon.last_fire_tick)))
+        # debug.draw(model.CustomData.Log(
+        #    "Shoot Counter: {}".format(self.shoot_counter)))
+        # debug.draw(model.CustomData.Log(
+        #     "rltv_dist: {}".format(self.rltv_enm_dist)))
+        # debug.draw(model.CustomData.Log(
+        #    "rltv_side: {}".format(self.rltv_enm_side)))
+        #
+        #    debug.draw(model.CustomData.Log(
+        #        "Weapon: {}".format(unit.weapon.typ)))
+        # debug.draw(model.CustomData.Log("mines: {}".format(unit.mines)))
+        # debug.draw(model.CustomData.Log("plant_mine: {}".format(plant_mine)))
+        # debug.draw(model.CustomData.Log(
+        #    "Nearest Mine: {}".format(nearest_mine)))
+        # debug.draw(model.CustomData.Log("Max HP: {}".format(self.max_hp)))
+        # debug.draw(model.CustomData.Log("Current HP: {}".format(self.curr_hp)))
+        # debug.draw(model.CustomData.Log("My velocity: {}".format(velocity)))
+        # debug.draw(model.CustomData.Log(
+        #     "Enemy velocity: {}".format(self.enemy_velocity)))
+        # debug.draw(model.CustomData.Log("Target pos: {}".format(target_pos)))
+        # debug.draw(model.CustomData.Log("Unit pos: {}".format(unit.position)))
+        # debug.draw(model.CustomData.Log(
+        #     "Enemy pos: {}".format(nearest_enemy.position)))
+        # debug.draw(model.CustomData.Log(
+        #     "Expected enemy pos: {}".format(expected_enemy_pos)))
+        # debug.draw(model.CustomData.Log(
+        #    "Velocity: {}".format(target_pos.x - unit.position.x)))
+        # debug.draw(model.CustomData.Log("Jump: {}".format(jump)))
+        # debug.draw(model.CustomData.Log("Dist X: {}".format(
+        #    nearest_enemy.position.x - unit.position.x)))
+        # debug.draw(model.CustomData.Log("Dist Y: {}".format(
+        #    nearest_enemy.position.y - unit.position.y)))
+        # debug.draw(model.CustomData.Log("Trajectory length: {}".format(leng)))
+        # debug.draw(model.CustomData.Log(
+        #     "poslist: {}".format(poslist)))
+        #  /Debug----------------------
 
         self.prev_enemy_pos = nearest_enemy.position
 
