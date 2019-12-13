@@ -163,13 +163,18 @@ class MyStrategy:
                     jump = False
         return jump
 
-    def calc_plant_mine(self, unit, nearest_enemy, velocity):
+    def calc_plant_mine(self, unit, nearest_enemy, velocity, jump, jump_down, los):
         plant_mine = False
-        if unit.mines:
-            enemy_pos = Calc.sign(nearest_enemy.position.x - unit.position.x)
-            if Calc.sign(velocity) != enemy_pos:
-                plant_mine = True
-        return plant_mine
+        # if (not los) and unit.mines:
+        #    if Calc.sign(velocity) == self.rltv_enm_side:
+        #        plant_mine = True
+        #        jump = False
+        #        jump_down = False
+        # if unit.mines:
+        #    enemy_pos = Calc.sign(nearest_enemy.position.x - unit.position.x)
+        #    if Calc.sign(velocity) != enemy_pos:
+        #        plant_mine = True
+        return plant_mine, jump, jump_down
 
     def get_action(self, unit, game, debug):
         nearest_enemy, nearest_weapon, nearest_hpbox, nearest_mine, expected_enemy_pos = self.calc_objects(
@@ -184,8 +189,10 @@ class MyStrategy:
         shoot = self.calc_shoot(los)
 
         jump = self.calc_jump(unit, game, target_pos)
+        jump_down = not jump
 
-        plant_mine = self.calc_plant_mine(unit, nearest_enemy, velocity)
+        plant_mine, jump, jump_down = self.calc_plant_mine(
+            unit, nearest_enemy, velocity, jump, jump_down, los)
 
         #  Debug----------------------
         # if unit.weapon is not None:
@@ -236,7 +243,7 @@ class MyStrategy:
         return model.UnitAction(
             velocity=velocity,
             jump=jump,
-            jump_down=not jump,
+            jump_down=jump_down,
             aim=aim,
             shoot=shoot,
             reload=False,
