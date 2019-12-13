@@ -102,7 +102,7 @@ class MyStrategy:
         target_pos = unit.position
         if (unit.weapon is None and nearest_weapon is not None) or (unit.weapon.typ == 0):
             target_pos = nearest_weapon.position
-        elif nearest_hpbox is not None and self.curr_hp <= 0.85:
+        elif nearest_hpbox is not None and self.curr_hp <= 0.9:
             target_pos = model.Vec2Double(
                 nearest_hpbox.position.x,
                 nearest_hpbox.position.y)
@@ -159,7 +159,8 @@ class MyStrategy:
         if target_pos.y < unit.position.y and game.level.tiles[int(unit.position.x)][int(unit.position.y - 1)] == model.Tile.PLATFORM:
             move_side = Calc.sign(target_pos.x - unit.position.x)
             if game.level.tiles[int(unit.position.x + move_side)][int(unit.position.y)] != model.Tile.WALL:
-                jump = False
+                if game.level.tiles[int(unit.position.x + move_side)][int(unit.position.y - 1)] != model.Tile.WALL:
+                    jump = False
         return jump
 
     def calc_plant_mine(self, unit, nearest_enemy, velocity):
