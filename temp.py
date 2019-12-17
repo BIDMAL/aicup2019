@@ -1,3 +1,9 @@
+# add:
+#  map positioning (highs, behind HP, etc)
+#  better aiming
+#  bullet dodging
+#  account 2nd player
+
 
 class Calc:
     @staticmethod
